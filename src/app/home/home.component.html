@@ -1,5 +1,16 @@
-<div class="page-content">
-    <h2>Welcome to the Home Page</h2>
+<div class="container">
+  <h1>Welcome to My Angular App</h1>
+  <p>Welcome to the Home Page</p>
+  
+  <div *ngIf="$klanten | async as klanten">
+    <h2>Klanten List</h2>
+    <ul>
+      <li *ngFor="let klant of klanten">
+        {{ klant.naam }} - {{ klant.email }}
+      </li>
+    </ul>
   </div>
   
-{{$klanten | async | json}}
+  <!-- Assuming you want a search functionality, you'd typically need to implement it -->
+  <!-- This requires a search method and a model to bind to your search input -->
+</div>
