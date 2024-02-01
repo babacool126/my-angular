@@ -1,0 +1,12 @@
+<div class="page-content" style="background-image: url('assets/computer_image.jpg');">
+    <h2>Form Page</h2>
+    <!-- Add your form here -->
+    <h3 class="text-primary">List of Cities and Countries:</h3>
+  <ul class="list-group">
+    <li *ngFor="let place of places" class="list-group-item">
+        <span class="badge bg-info">{{ place.city }}, {{ place.country }}</span>
+    </li>
+  </ul>
+  </div>
+
+  
