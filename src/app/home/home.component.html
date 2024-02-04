@@ -1,16 +1,24 @@
-<div class="container">
-  <h1>Welcome to My Angular App</h1>
-  <p>Welcome to the Home Page</p>
-  
-  <div *ngIf="$klanten | async as klanten">
-    <h2>Klanten List</h2>
-    <ul>
-      <li *ngFor="let klant of klanten">
-        {{ klant.naam }} - {{ klant.email }}
-      </li>
-    </ul>
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h1 class="display-4">Welcome to My Angular App</h1>
+    <p>Welcome to the Home Page</p>
   </div>
   
-  <!-- Assuming you want a search functionality, you'd typically need to implement it -->
-  <!-- This requires a search method and a model to bind to your search input -->
+  <div class="row">
+    <div class="col-md-6 mb-3" *ngIf="$klanten | async as klanten">
+      <div class="bg-light p-3 rounded">
+        <h2>Klanten List</h2>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let klant of klanten">
+            {{ klant.naam }} - {{ klant.email }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Placeholder for other content -->
+    <div class="col-md-6">
+      <!-- You can add more content here, like a brief about your services -->
+    </div>
+  </div>
 </div>
