@@ -7,7 +7,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
-import { FormPageComponent } from './form-page/form-page.component';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    FormPageComponent
   ],
   imports: [
     BrowserModule,
