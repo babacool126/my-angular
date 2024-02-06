@@ -8,7 +8,7 @@ import { Afspraak } from '../models/afspraak.model';
   providedIn: 'root'
 })
 export class AfspraakService {
-  private apiUrl = 'http://localhost:7030/api/afspraaks'; // Adjust the port as necessary
+  private apiUrl = 'https://localhost:7030/api/afspraaks'; // Adjust the port as necessary
 
   constructor(private http: HttpClient) { }
 
