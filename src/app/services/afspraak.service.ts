@@ -12,9 +12,28 @@ export class AfspraakService {
 
   constructor(private http: HttpClient) { }
 
+  // Create a new appointment
   createAfspraak(afspraak: Afspraak): Observable<Afspraak> {
     return this.http.post<Afspraak>(this.apiUrl, afspraak);
   }
 
-  // Implement other methods as necessary (get, update, delete)
+  // Get all appointments
+  getAfspraken(): Observable<Afspraak[]> {
+    return this.http.get<Afspraak[]>(this.apiUrl);
+  }
+
+  // Get a single appointment by ID
+  getAfspraakById(id: number): Observable<Afspraak> {
+    return this.http.get<Afspraak>(`${this.apiUrl}/${id}`);
+  }
+
+  // Update an existing appointment
+  updateAfspraak(afspraak: Afspraak): Observable<Afspraak> {
+    return this.http.put<Afspraak>(`${this.apiUrl}/${afspraak.Id}`, afspraak);
+  }
+
+  // Delete an appointment by ID
+  deleteAfspraak(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
 }
