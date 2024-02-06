@@ -1,21 +1,22 @@
-<!-- src/app/components/create-afspraak/create-afspraak.component.html -->
 <div class="container mt-4">
-    <h2>Planifier un Rendez-vous</h2>
-    <form (ngSubmit)="onSubmit()">
-      <!-- Form fields for afspraak details -->
-      <div class="mb-3">
-        <label for="soort" class="form-label">Type d'afspraak</label>
-        <select class="form-control" id="soort" [(ngModel)]="afspraak.Soort" name="soort">
-          <option value="Inspectie">Inspectie</option>
-          <option value="Reparatie">Reparatie</option>
-          <option value="Onderhoud">Onderhoud</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="datumTijd" class="form-label">Date et Heure</label>
-        <input type="datetime-local" id="datumTijd" class="form-control" [(ngModel)]="afspraak.DatumTijd" name="datumTijd">
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-  </div>
+  <h2>Planifier un Rendez-vous</h2>
+  <form (ngSubmit)="onSubmit()">
+    <!-- Form fields for afspraak details -->
+    <div class="mb-3">
+      <label for="soort" class="form-label">Type de rendez-vous</label>
+      <select class="form-control" id="soort" [(ngModel)]="afspraak.Soort" name="soort" required>
+        <option value="Inspectie">Inspection</option>
+        <option value="Reparatie">Réparation</option>
+        <option value="Onderhoud">Entretien</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="datumTijd" class="form-label">Date et Heure</label>
+      <input type="datetime-local" id="datumTijd" class="form-control" [(ngModel)]="afspraak.DatumTijd" name="datumTijd" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Soumettre</button>
+  </form>
+  <div *ngIf="error" class="alert alert-danger mt-2">{{error}}</div>
+</div>
+
   

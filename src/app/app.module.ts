@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateAfspraakComponent } from './create-afspraak/create-afspraak.component';
+import { ListAfspraakComponent } from './list-afspraak/list-afspraak.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { CreateAfspraakComponent } from './create-afspraak/create-afspraak.compo
     FooterComponent,
     HomeComponent,
     CreateAfspraakComponent,
+    ListAfspraakComponent,
   ],
   imports: [
     BrowserModule,

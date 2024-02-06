@@ -15,12 +15,21 @@ export class CreateAfspraakComponent {
     DatumTijd: new Date()
 };
 
+error: string | null = null; // Declare the error property here
+
 constructor(private afspraakService: AfspraakService) { }
 
 onSubmit(): void {
   this.afspraakService.createAfspraak(this.afspraak).subscribe({
-    next: (afspraak) => console.log(afspraak),
-    error: (error: any) => console.error(error)
+    next: (afspraak) => {
+      console.log(afspraak);
+      // Optionally, clear the form or redirect the user
+      this.error = null; // Clear any previous error message
+    },
+    error: (error: any) => {
+      console.error(error);
+      this.error = 'Une erreur est survenue lors de la création du rendez-vous.'; // Set the error message
+    }
   });
 }
 }

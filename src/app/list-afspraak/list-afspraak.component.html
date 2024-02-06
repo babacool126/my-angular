@@ -1,0 +1,12 @@
+<div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+  <div *ngIf="!error">
+    <h2>Afspraken List</h2>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let afspraak of afspraken">
+        {{ afspraak.DatumTijd | date: 'fullDate' }}: {{ afspraak.Soort }}
+      </li>
+    </ul>
+  </div>
+  
