@@ -18,6 +18,6 @@ export interface Klant {
     KlantId: number;
     Klant?: Klant;
     Soort: SoortAfspraak;
-    DatumTijd: Date;
+    DatumTijd: Date | string;
   }
   

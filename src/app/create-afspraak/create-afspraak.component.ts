@@ -10,7 +10,7 @@ import { Afspraak, SoortAfspraak } from '../models/afspraak.model';
 export class CreateAfspraakComponent {
   afspraak: Afspraak = {
     Id: 0,
-    KlantId: 0, // Assuming you have a way to set this, perhaps from a logged-in user session
+    KlantId: 0,
     Soort: SoortAfspraak.Inspectie,
     DatumTijd: new Date()
 };
@@ -20,16 +20,25 @@ error: string | null = null; // Declare the error property here
 constructor(private afspraakService: AfspraakService) { }
 
 onSubmit(): void {
-  this.afspraakService.createAfspraak(this.afspraak).subscribe({
-    next: (afspraak) => {
-      console.log(afspraak);
-      // Optionally, clear the form or redirect the user
-      this.error = null; // Clear any previous error message
-    },
-    error: (error: any) => {
-      console.error(error);
-      this.error = 'Une erreur est survenue lors de la création du rendez-vous.'; // Set the error message
-    }
-  });
+
+  // Prepare the afspraak object, ensuring DatumTijd is a string for the submission
+  if (this.afspraak.DatumTijd instanceof Date) {
+    // Convert DatumTijd to a string, but directly manipulate the afspraak object for submission
+    const afspraakForSubmission = { ...this.afspraak, DatumTijd: this.afspraak.DatumTijd.toISOString() };
+
+    console.log('Submitting:', this.afspraak); // Log the afspraak object being submitted
+
+    this.afspraakService.createAfspraak(afspraakForSubmission as any).subscribe({
+      next: (afspraak) => {
+        console.log('Response from server:',afspraak);
+        this.error = null; // Clear any previous error message
+        // Redirect the user or clear the form here
+      },
+      error: (error: any) => {
+        console.error('Error submitting form:',error);
+        this.error = 'Une erreur est survenue lors de la création du rendez-vous.'; // Set the error message
+      }
+    });
+  }
 }
 }
