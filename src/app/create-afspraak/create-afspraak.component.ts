@@ -1,6 +1,8 @@
+// src/app/create-afspraak/create-afspraak.component.ts
 import { Component } from '@angular/core';
 import { AfspraakService } from '../services/afspraak.service';
-import { Afspraak, SoortAfspraak } from '../models/afspraak.model';
+import { KlantService } from '../services/klant.service'; // Import KlantService
+import { Afspraak, SoortAfspraak, Klant } from '../models/afspraak.model';
 
 @Component({
   selector: 'app-create-afspraak',
@@ -8,37 +10,51 @@ import { Afspraak, SoortAfspraak } from '../models/afspraak.model';
   styleUrls: ['./create-afspraak.component.css']
 })
 export class CreateAfspraakComponent {
-  afspraak: Afspraak = {
-    Id: 0,
-    KlantId: 0,
+  klant: Omit<Klant, 'Id'> = {
+    Naam: '',
+    Email: '',
+    Telefoonnummer: ''
+  };
+
+  afspraak: Omit<Afspraak, 'Id' | 'KlantId'> = {
     Soort: SoortAfspraak.Inspectie,
     DatumTijd: new Date()
-};
+  };
+  error: string | null = null;
 
-error: string | null = null; // Declare the error property here
+  soortAfspraakKeys = Object.values(SoortAfspraak);
 
-constructor(private afspraakService: AfspraakService) { }
+  constructor(private afspraakService: AfspraakService, private klantService: KlantService) { } // Inject KlantService
 
-onSubmit(): void {
+  onSubmit(): void {
+    // Convert DatumTijd to a string in ISO format as expected by the backend
 
-  // Prepare the afspraak object, ensuring DatumTijd is a string for the submission
-  if (this.afspraak.DatumTijd instanceof Date) {
-    // Convert DatumTijd to a string, but directly manipulate the afspraak object for submission
-    const afspraakForSubmission = { ...this.afspraak, DatumTijd: this.afspraak.DatumTijd.toISOString() };
 
-    console.log('Submitting:', this.afspraak); // Log the afspraak object being submitted
+    // Use the form-bound klant object directly
+    this.klantService.createKlant(this.klant).subscribe({
+      next: (createdKlant) => {
+        // Successfully created klant, now create afspraak with the KlantId
+        const afspraakToCreate = {
+          KlantId: createdKlant.Id, // Assign the newly created Klant's Id to the afspraak
+        };
 
-    this.afspraakService.createAfspraak(afspraakForSubmission as any).subscribe({
-      next: (afspraak) => {
-        console.log('Response from server:',afspraak);
-        this.error = null; // Clear any previous error message
-        // Redirect the user or clear the form here
+        this.afspraakService.createAfspraak(afspraakToCreate as Afspraak).subscribe({
+          next: (afspraak) => {
+            console.log('Appointment created', afspraak);
+            this.error = null; // Clear any previous error message
+            // Here you could navigate to another page or reset the form as needed
+            // e.g., this.router.navigate(['/']);
+          },
+          error: (error) => {
+            console.error('Error creating appointment:', error);
+            this.error = 'An error occurred while creating the appointment.';
+          }
+        });
       },
-      error: (error: any) => {
-        console.error('Error submitting form:',error);
-        this.error = 'Une erreur est survenue lors de la création du rendez-vous.'; // Set the error message
+      error: (error) => {
+        console.error('Error creating client:', error);
+        this.error = 'An error occurred while creating the client.';
       }
     });
   }
-}
 }

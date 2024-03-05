@@ -1,22 +1,64 @@
 <div class="container mt-4">
-  <h2>Planifier un Rendez-vous</h2>
-  <form (ngSubmit)="onSubmit()">
-    <!-- Form fields for afspraak details -->
+  <h2>Create Appointment</h2>
+  <!-- The form now uses ngSubmit for form submission -->
+  <form #afspraakForm="ngForm" (ngSubmit)="onSubmit()">
+    <!-- Client Name Input -->
     <div class="mb-3">
-      <label for="soort" class="form-label">Type de rendez-vous</label>
-      <select class="form-control" id="soort" [(ngModel)]="afspraak.Soort" name="soort" required>
-        <option value="Inspectie">Inspection</option>
-        <option value="Reparatie">Réparation</option>
-        <option value="Onderhoud">Entretien</option>
+      <label for="klantNaam" class="form-label">Client Name</label>
+      <input type="text" class="form-control" id="klantNaam" [(ngModel)]="klant.Naam" name="naam" required #naam="ngModel">
+      <div *ngIf="naam.invalid && naam.touched" class="text-danger">
+        Client name is required.
+      </div>
+    </div>
+    
+    <!-- Email Input -->
+    <div class="mb-3">
+      <label for="klantEmail" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="klantEmail" [(ngModel)]="klant.Email" name="email" required email #email="ngModel">
+      <div *ngIf="email.invalid && email.touched" class="text-danger">
+        A valid email is required.
+      </div>
+    </div>
+    
+    <!-- Phone Number Input -->
+    <div class="mb-3">
+      <label for="klantTelefoonnummer" class="form-label">Phone Number</label>
+      <input type="text" class="form-control" id="klantTelefoonnummer" [(ngModel)]="klant.Telefoonnummer" name="telefoonnummer" required #telefoonnummer="ngModel">
+      <div *ngIf="telefoonnummer.invalid && telefoonnummer.touched" class="text-danger">
+        Phone number is required.
+      </div>
+    </div>
+    
+    <!-- Appointment Type Select -->
+    <div class="mb-3">
+      <label for="afspraakSoort" class="form-label">Appointment Type</label>
+      <select class="form-select" id="afspraakSoort" [(ngModel)]="afspraak.Soort" name="soort" required #soort="ngModel">
+        <option *ngFor="let soort of soortAfspraakKeys" [ngValue]="soort">{{soort}}</option>
       </select>
+      <div *ngIf="soort.invalid && soort.touched" class="text-danger">
+        Selecting an appointment type is required.
+      </div>
     </div>
+    
+    <!-- Date and Time Input -->
     <div class="mb-3">
-      <label for="datumTijd" class="form-label">Date et Heure</label>
-      <input type="datetime-local" id="datumTijd" class="form-control" [(ngModel)]="afspraak.DatumTijd" name="datumTijd" required>
+      <label for="afspraakDatumTijd" class="form-label">Date and Time</label>
+      <input type="datetime-local" class="form-control" id="afspraakDatumTijd" [(ngModel)]="afspraak.DatumTijd" name="datumTijd" required #datumTijd="ngModel">
+      <div *ngIf="datumTijd.invalid && datumTijd.touched" class="text-danger">
+        Date and time are required.
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary">Soumettre</button>
+    
+    <!-- Error Message Display -->
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+    
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary" [disabled]="afspraakForm.invalid">Submit</button>
   </form>
-  <div *ngIf="error" class="alert alert-danger mt-2">{{error}}</div>
 </div>
+
+
 
   
