@@ -8,6 +8,7 @@ import { KlantComponent } from './klant/klant.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'acceuil', component: HomeComponent },
   { path: 'create-afspraak', component: CreateAfspraakComponent },
   { path: 'list-afspraak', component: ListAfspraakComponent }, // New route for listing afspraken
   { path: 'clients', component: KlantComponent },
