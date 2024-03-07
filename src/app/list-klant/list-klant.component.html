@@ -1,0 +1,25 @@
+<div class="container mt-3">
+    <h2>Liste des Clients</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let klant of klanten">
+          <td>{{ klant.id }}</td>
+          <td>{{ klant.Naam }}</td>
+          <td>{{ klant.Email }}</td>
+          <td>{{ klant.Telefoonnummer }}</td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteKlant(klant.id!)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

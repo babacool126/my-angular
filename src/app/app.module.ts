@@ -13,6 +13,7 @@ import { CreateAfspraakComponent } from './create-afspraak/create-afspraak.compo
 import { ListAfspraakComponent } from './list-afspraak/list-afspraak.component';
 import { ClientsComponent } from './clients/clients.component';
 import { KlantComponent } from './klant/klant.component';
+import { ListKlantComponent } from './list-klant/list-klant.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { KlantComponent } from './klant/klant.component';
     ListAfspraakComponent,
     ClientsComponent,
     KlantComponent,
+    ListKlantComponent,
   ],
   imports: [
     BrowserModule,
