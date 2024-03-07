@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { CreateAfspraakComponent } from './create-afspraak/create-afspraak.component';
 import { ListAfspraakComponent } from './list-afspraak/list-afspraak.component';
 import { KlantComponent } from './klant/klant.component';
+import { ListKlantComponent } from './list-klant/list-klant.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'create-afspraak', component: CreateAfspraakComponent },
   { path: 'list-afspraak', component: ListAfspraakComponent }, // New route for listing afspraken
   { path: 'clients', component: KlantComponent },
+  { path: 'list-klant', component: ListKlantComponent },
 ];
 
 @NgModule({
