@@ -11,6 +11,8 @@ import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateAfspraakComponent } from './create-afspraak/create-afspraak.component';
 import { ListAfspraakComponent } from './list-afspraak/list-afspraak.component';
+import { ClientsComponent } from './clients/clients.component';
+import { KlantComponent } from './klant/klant.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { ListAfspraakComponent } from './list-afspraak/list-afspraak.component';
     HomeComponent,
     CreateAfspraakComponent,
     ListAfspraakComponent,
+    ClientsComponent,
+    KlantComponent,
   ],
   imports: [
     BrowserModule,

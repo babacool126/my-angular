@@ -1,23 +1,20 @@
 // src/app/models/afspraak.model.ts
-
-export interface Klant {
-    Id: number;
-    Naam: string;
-    Email: string;
-    Telefoonnummer: string;
-  }
   
   export enum SoortAfspraak {
-    Inspectie,
-    Reparatie,
-    Onderhoud
+    Inspectie = 1,
+    Reparatie = 2,
+    Onderhoud = 3
   }
   
   export interface Afspraak {
-    Id: number;
-    KlantId: number;
-    Klant?: Klant;
-    Soort: SoortAfspraak;
-    DatumTijd: Date | string;
+    id?: number,
+    klantId?: number;
+    klant: {
+      naam: string;
+      email: string;
+      telefoonnummer: string;
+    } | undefined;
+    soort: number;
+    datumTijd: string;
   }
   

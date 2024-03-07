@@ -1,60 +1,65 @@
-// src/app/create-afspraak/create-afspraak.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AfspraakService } from '../services/afspraak.service';
-import { KlantService } from '../services/klant.service'; // Import KlantService
-import { Afspraak, SoortAfspraak, Klant } from '../models/afspraak.model';
+import { Afspraak } from '../models/afspraak.model';
+import { Klant } from '../models/klant.model';
+import { SoortAfspraak } from '../models/soort.model';
 
 @Component({
   selector: 'app-create-afspraak',
   templateUrl: './create-afspraak.component.html',
   styleUrls: ['./create-afspraak.component.css']
 })
-export class CreateAfspraakComponent {
-  klant: Omit<Klant, 'Id'> = {
-    Naam: '',
-    Email: '',
-    Telefoonnummer: ''
-  };
-
-  afspraak: Omit<Afspraak, 'Id' | 'KlantId'> = {
-    Soort: SoortAfspraak.Inspectie,
-    DatumTijd: new Date()
-  };
+export class CreateAfspraakComponent implements OnInit {
+  afspraakForm: FormGroup;
   error: string | null = null;
+  soortAfspraakKeys = Object.keys(SoortAfspraak).filter(k => !isNaN(Number(k))).map(k => ({ key: k, value: SoortAfspraak[k as any] }));
 
-  soortAfspraakKeys = Object.values(SoortAfspraak);
+  constructor(
+    private fb: FormBuilder,
+    private afspraakService: AfspraakService
+  ) {
+    this.afspraakForm = this.fb.group({
+      klantId: [''], // Optional: User inputs klantId for an existing klant
+      klant: this.fb.group({ // Optional: For creating a new klant
+        naam: [''],
+        email: [''],
+        telefoonnummer: ['']
+      }),
+      soort: ['', Validators.required],
+      datumTijd: ['', Validators.required]
+    });
+  }
 
-  constructor(private afspraakService: AfspraakService, private klantService: KlantService) { } // Inject KlantService
+  ngOnInit(): void {}
 
   onSubmit(): void {
-    // Convert DatumTijd to a string in ISO format as expected by the backend
+    const formValue = this.afspraakForm.value;
 
+    const datumTijdISO = new Date(formValue.datumTijd).toISOString();
 
-    // Use the form-bound klant object directly
-    this.klantService.createKlant(this.klant).subscribe({
-      next: (createdKlant) => {
-        // Successfully created klant, now create afspraak with the KlantId
-        const afspraakToCreate = {
-          KlantId: createdKlant.Id, // Assign the newly created Klant's Id to the afspraak
-        };
-
-        this.afspraakService.createAfspraak(afspraakToCreate as Afspraak).subscribe({
-          next: (afspraak) => {
-            console.log('Appointment created', afspraak);
-            this.error = null; // Clear any previous error message
-            // Here you could navigate to another page or reset the form as needed
-            // e.g., this.router.navigate(['/']);
-          },
-          error: (error) => {
-            console.error('Error creating appointment:', error);
-            this.error = 'An error occurred while creating the appointment.';
-          }
-        });
+    // Directly create the Afspraak object expected by the service
+    const afspraak: Afspraak = {
+      klantId: formValue.klantId ? Number(formValue.klantId) : undefined, // Convert to number, if present
+      klant: formValue.klantId ? undefined : { // Include klant only if klantId is not provided
+          naam: formValue.klant.naam,
+          email: formValue.klant.email,
+          telefoonnummer: formValue.klant.telefoonnummer
       },
-      error: (error) => {
-        console.error('Error creating client:', error);
-        this.error = 'An error occurred while creating the client.';
-      }
+      soort: Number(formValue.soort),
+      datumTijd: datumTijdISO,
+    }
+    // Call the service with the correctly structured Afspraak object
+    this.afspraakService.createAfspraak(afspraak).subscribe({
+        next: response => console.log('Afspraak created successfully.', response),
+        error: err => this.error = `Error creating afspraak: ${err.message || err}`
     });
   }
 }
+
+
+
+
+
+
+

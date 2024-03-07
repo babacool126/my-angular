@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Klant} from '../models/afspraak.model';
+import {Klant} from '../models/klant.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class KlantService {
 
   // Update an existing client
   updateKlant(klant: Klant): Observable<Klant> {
-    return this.http.put<Klant>(`${this.apiUrl}/${klant.Id}`, klant);
+    return this.http.put<Klant>(`${this.apiUrl}/${klant.id}`, klant);
   }
 
   // Delete a client by ID
