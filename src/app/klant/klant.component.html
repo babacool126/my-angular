@@ -1,1 +1,20 @@
-<p>klant works!</p>
+<div class="container mt-3">
+    <h2>{{isEditing ? 'Modifier Client' : 'Ajouter Client'}}</h2>
+    <form (ngSubmit)="onSubmit(klantForm)" #klantForm="ngForm">
+      <div class="mb-3">
+        <label for="naam">Nom</label>
+        <input type="text" id="naam" class="form-control" [(ngModel)]="newKlant.Naam" name="Naam" required>
+      </div>
+      <div class="mb-3">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="newKlant.Email" name="Email" required>
+      </div>
+      <div class="mb-3">
+        <label for="telefoonnummer">Numéro de Téléphone</label>
+        <input type="text" id="telefoonnummer" class="form-control" [(ngModel)]="newKlant.Telefoonnummer" name="Telefoonnummer" required>
+      </div>
+      <button type="submit" class="btn btn-primary">{{isEditing ? 'Mettre à jour' : 'Ajouter'}}</button>
+      <button type="button" class="btn btn-secondary" (click)="resetForm(klantForm)" *ngIf="isEditing">Annuler</button>
+    </form>
+  </div>
+  
