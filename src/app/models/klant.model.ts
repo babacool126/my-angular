@@ -2,7 +2,7 @@
 
 export interface Klant {
     id?: number,
-    Naam: string;
-    Email: string;
-    Telefoonnummer: string;
+    naam: string;
+    email: string;
+    telefoonnummer: string;
   }

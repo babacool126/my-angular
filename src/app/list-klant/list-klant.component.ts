@@ -17,9 +17,11 @@ export class ListKlantComponent implements OnInit {
   }
 
   loadKlanten(): void {
-    this.klantService.getKlanten().subscribe(klanten => this.klanten = klanten);
-  }
-
+    this.klantService.getKlanten().subscribe(klanten => {
+        console.log(klanten); // This will show you the data received from the backend
+        this.klanten = klanten;
+    });
+}
   deleteKlant(id: number): void {
     const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce client?');
     if (confirmation) {

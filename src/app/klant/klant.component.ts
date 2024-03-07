@@ -12,9 +12,9 @@ export class KlantComponent implements OnInit {
   klanten: Klant[] = [];
   newKlant: Klant = {
     id: 0,
-    Naam: '',
-    Email: '',
-    Telefoonnummer: ''
+    naam: '',
+    email: '',
+    telefoonnummer: ''
   };
   isEditing = false; // Track if we are adding a new klant or editing an existing one
 
@@ -67,7 +67,7 @@ export class KlantComponent implements OnInit {
   
   resetForm(form: NgForm): void {
     form.reset();
-    this.newKlant = { id: 0, Naam: '', Email: '', Telefoonnummer: '' };
+    this.newKlant = { id: 0, naam: '', email: '', telefoonnummer: '' };
     this.isEditing = false;
   }
 }

@@ -12,9 +12,9 @@
       <tbody>
         <tr *ngFor="let klant of klanten">
           <td>{{ klant.id }}</td>
-          <td>{{ klant.Naam }}</td>
-          <td>{{ klant.Email }}</td>
-          <td>{{ klant.Telefoonnummer }}</td>
+          <td>{{ klant.naam }}</td>
+          <td>{{ klant.email }}</td>
+          <td>{{ klant.telefoonnummer }}</td>
           <td>
             <button class="btn btn-danger" (click)="deleteKlant(klant.id!)">Supprimer</button>
           </td>
