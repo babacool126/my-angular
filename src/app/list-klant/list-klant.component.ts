@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { KlantService } from '../services/klant.service';
 import { Klant } from '../models/klant.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-list-klant',
@@ -9,6 +10,9 @@ import { Klant } from '../models/klant.model';
 })
 export class ListKlantComponent implements OnInit {
   klanten: Klant[] = [];
+  editingKlant: Klant | null = null; // Currently being edited klant
+
+  @ViewChild('editFormElement') editFormElement!: ElementRef; // ViewChild for scrolling to form
 
   constructor(private klantService: KlantService) { }
 
@@ -17,17 +21,39 @@ export class ListKlantComponent implements OnInit {
   }
 
   loadKlanten(): void {
-    this.klantService.getKlanten().subscribe(klanten => {
-        console.log(klanten); // This will show you the data received from the backend
-        this.klanten = klanten;
-    });
-}
+    this.klantService.getKlanten().subscribe(klanten => this.klanten = klanten);
+  }
+
+  startEdit(klant: Klant): void {
+    console.log("Editing klant:", klant); // Check if klant is passed correctly
+    this.editingKlant = { ...klant };
+    console.log("editingKlant after set:", this.editingKlant); // Verify editingKlant is set
+    this.scrollToEditForm(); // Scroll to edit form
+  }
+
+  submitEdit(form: NgForm): void {
+    if (this.editingKlant && form.valid) {
+      this.klantService.updateKlant(this.editingKlant).subscribe(() => {
+        this.loadKlanten();
+        this.cancelEdit(); // Reset editing state
+      });
+    }
+  }
+
+  cancelEdit(): void {
+    this.editingKlant = null;
+  }
+
   deleteKlant(id: number): void {
     const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce client?');
     if (confirmation) {
       this.klantService.deleteKlant(id).subscribe(() => {
-        this.loadKlanten(); // Refresh the list after deletion
+        this.loadKlanten();
       });
     }
   }
+  scrollToEditForm() {
+    this.editFormElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  }
 }
+

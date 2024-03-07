@@ -1,25 +1,57 @@
-<div class="container mt-3">
-    <h2>Liste des Clients</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nom</th>
-          <th>Email</th>
-          <th>Téléphone</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let klant of klanten">
-          <td>{{ klant.id }}</td>
-          <td>{{ klant.naam }}</td>
-          <td>{{ klant.email }}</td>
-          <td>{{ klant.telefoonnummer }}</td>
-          <td>
-            <button class="btn btn-danger" (click)="deleteKlant(klant.id!)">Supprimer</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="container mt-5">
+    <h2 class="mb-4">Liste des Clients</h2>
+    <div class="table-responsive">
+        <table class="table table-hover table-dark">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Numéro de client</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Téléphone</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let klant of klanten">
+                    <td>{{ klant.id }}</td>
+                    <td>{{ klant.naam }}</td>
+                    <td>{{ klant.email }}</td>
+                    <td>{{ klant.telefoonnummer }}</td>
+                    <td>
+                        <button class="btn btn-primary me-2" (click)="startEdit(klant)">
+                            <i class="bi bi-pencil-square"></i> Modifier
+                        </button>
+                        <button class="btn btn-danger" (click)="deleteKlant(klant.id!)">
+                            <i class="bi bi-trash"></i> Supprimer
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Edit Client Form -->
+    <!-- Edit Client Form -->
+  <div #editFormElement *ngIf="editingKlant" class="mt-5">
+      <h3>Modifier Client</h3>
+      <form #editForm="ngForm" (ngSubmit)="submitEdit(editForm)">
+          <div class="form-group">
+              <label for="naam">Nom</label>
+              <input type="text" class="form-control" id="naam" [(ngModel)]="editingKlant.naam" name="naam" required>
+          </div>
+          <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" [(ngModel)]="editingKlant.email" name="email" required>
+          </div>
+          <div class="form-group">
+              <label for="telefoonnummer">Téléphone</label>
+              <input type="text" class="form-control" id="telefoonnummer" [(ngModel)]="editingKlant.telefoonnummer" name="telefoonnummer" required>
+          </div>
+          <button type="submit" class="btn btn-success">Mettre à jour</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
+      </form>
   </div>
+</div>
+
+
   
