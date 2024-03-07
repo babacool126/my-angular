@@ -3,14 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { CreateAfspraakComponent } from './create-afspraak/create-afspraak.component';
 import { ListAfspraakComponent } from './list-afspraak/list-afspraak.component';
-import { ClientsComponent } from './clients/clients.component';
+import { KlantComponent } from './klant/klant.component';
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'create-afspraak', component: CreateAfspraakComponent },
   { path: 'list-afspraak', component: ListAfspraakComponent }, // New route for listing afspraken
-  { path: 'clients', component: ClientsComponent },
+  { path: 'clients', component: KlantComponent },
 ];
 
 @NgModule({
