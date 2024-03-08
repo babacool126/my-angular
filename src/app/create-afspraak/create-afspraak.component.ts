@@ -35,28 +35,32 @@ export class CreateAfspraakComponent implements OnInit {
 
   onSubmit(): void {
     const formValue = this.afspraakForm.value;
+  
+    // Assuming formValue.datumTijd is already in an acceptable format (ISO string from a date input)
+    let afspraak: Partial<Afspraak> = {
+      klantId: formValue.klantId ? Number(formValue.klantId) : undefined,
+      soort: formValue.soort,
+      datumTijd: new Date(formValue.datumTijd) // Directly use the form's datumTijd as a Date object
+    };
 
-    const datumTijdISO = new Date(formValue.datumTijd).toISOString();
-
-    // Directly create the Afspraak object expected by the service
-    const afspraak: Afspraak = {
-      klantId: formValue.klantId ? Number(formValue.klantId) : undefined, // Convert to number, if present
-      klant: formValue.klantId ? undefined : { // Include klant only if klantId is not provided
-          naam: formValue.klant.naam,
-          email: formValue.klant.email,
-          telefoonnummer: formValue.klant.telefoonnummer
-      },
-      soort: Number(formValue.soort),
-      datumTijd: datumTijdISO,
+    // Conditionally add klant if klantId is not provided
+    if (!formValue.klantId && formValue.klant) {
+      afspraak = {
+        ...afspraak,
+        klant: {// Explicitly setting it as an indexed property to bypass TypeScript's strict type checking
+        naam: formValue.klant.naam,
+        email: formValue.klant.email,
+        telefoonnummer: formValue.klant.telefoonnummer,
+        }
+      } as Afspraak;
     }
-    // Call the service with the correctly structured Afspraak object
-    this.afspraakService.createAfspraak(afspraak).subscribe({
-        next: response => console.log('Afspraak created successfully.', response),
-        error: err => this.error = `Error creating afspraak: ${err.message || err}`
+
+    this.afspraakService.createAfspraak(afspraak as Afspraak).subscribe({
+      next: (response) => console.log('Afspraak created successfully.', response),
+      error: (err) => this.error = `Error creating afspraak: ${err.message || err}`,
     });
   }
 }
-
 
 
 

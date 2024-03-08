@@ -1,17 +1,37 @@
-<div *ngIf="afspraken.length; else noAfspraken">
-  <ul>
-    <li *ngFor="let afspraak of afspraken">
-      <p>Afspraak ID: {{afspraak.id}}</p>
-      <p>Type: {{afspraak.soort}}</p>
-      <p>Datum: {{afspraak.datumTijd | date}}</p>
-      <p>Klant Naam: {{afspraak.klant.naam}}</p>
-      <p>Klant Email: {{afspraak.klant.email}}</p>
-      <p>Klant Telefoonnummer: {{afspraak.klant.telefoonnummer}}</p>
-    </li>
-  </ul>
+<div *ngIf="afspraken.length; else noAfspraken" class="container mt-5">
+  <h2 class="mb-4">Appointment List</h2>
+  <div class="table-responsive">
+    <table class="table table-hover table-dark">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Afspraak ID</th>
+          <th scope="col">Type</th>
+          <th scope="col">Datum</th>
+          <th scope="col">Klant Naam</th>
+          <th scope="col">Klant Email</th>
+          <th scope="col">Klant Telefoonnummer</th>
+          <!-- Add more columns as needed -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let afspraak of afspraken">
+          <td>{{ afspraak.id }}</td>
+    	    <td>{{ getSoortString(afspraak.soort) }}</td>
+          <td>{{ afspraak.datumTijd | date }}</td>
+          <td>{{ afspraak.klantNaam }}</td>
+          <td>{{ afspraak.klantEmail }}</td>
+          <td>{{ afspraak.klantTelefoonnummer }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
 <ng-template #noAfspraken>
-  <p>No appointments found.</p>
+  <div class="container mt-5">
+    <p>Aucun Rendez-vous retrouvé.</p>
+  </div>
 </ng-template>
+
 
   
