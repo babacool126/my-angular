@@ -29,7 +29,7 @@ export class AfspraakService {
 
   // Update an existing appointment
   updateAfspraak(afspraak: Afspraak): Observable<Afspraak> {
-    return this.http.put<Afspraak>(`${this.apiUrl}/${afspraak.id}`, afspraak);
+    return this.http.put<Afspraak>(`${this.apiUrl}/${afspraak.afspraakId}`, afspraak);
   }
 
   // Delete an appointment by ID

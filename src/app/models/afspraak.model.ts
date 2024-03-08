@@ -3,7 +3,7 @@
 import {Klant} from './klant.model'
 
 export interface Afspraak {
-  id: number;
+  afspraakId: number;
   klantId?: number;
   klantNaam?: string;
   klantEmail?: string;

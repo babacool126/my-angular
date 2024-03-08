@@ -1,4 +1,4 @@
-<div *ngIf="afspraken.length; else noAfspraken" class="container mt-5">
+<div class="container mt-5">
   <h2 class="mb-4">Appointment List</h2>
   <div class="table-responsive">
     <table class="table table-hover table-dark">
@@ -10,28 +10,66 @@
           <th scope="col">Klant Naam</th>
           <th scope="col">Klant Email</th>
           <th scope="col">Klant Telefoonnummer</th>
-          <!-- Add more columns as needed -->
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let afspraak of afspraken">
-          <td>{{ afspraak.id }}</td>
-    	    <td>{{ getSoortString(afspraak.soort) }}</td>
+          <td>{{ afspraak.afspraakId }}</td>
+          <td>{{ getSoortString(afspraak.soort) }}</td>
           <td>{{ afspraak.datumTijd | date }}</td>
           <td>{{ afspraak.klantNaam }}</td>
           <td>{{ afspraak.klantEmail }}</td>
           <td>{{ afspraak.klantTelefoonnummer }}</td>
+          <td>
+            <button class="btn btn-primary me-2" (click)="startEdit(afspraak)">
+              <i class="bi bi-pencil-square"></i> Modify
+            </button>
+            <button class="btn btn-danger" (click)="deleteAfspraak(afspraak.afspraakId)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+  
+  
+Apologies for the cutoff. Let's complete the edit form for your appointments (Afspraak). This example assumes a simple inline form structure directly within the ListAfspraakComponent template for editing the selected appointment. The form will be conditionally displayed based on whether an editingAfspraak is set.
+
+html
+Copy code
+<!-- Edit Afspraak Form -->
+<div #editFormElement *ngIf="editingAfspraak" class="mt-5">
+  <h3>Edit Appointment</h3>
+  <form #editForm="ngForm" (ngSubmit)="submitEdit(editForm)">
+    <div class="form-group">
+      <label for="type">Type</label>
+      <select class="form-control" id="type" [(ngModel)]="editingAfspraak.soort" name="type" required>
+        <option *ngFor="let key of SoortAfspraak | keyvalue" [value]="key.key">{{ key.value }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="datumTijd">Datum</label>
+      <input type="date" class="form-control" id="datumTijd" [(ngModel)]="editingAfspraak.datumTijd" name="datumTijd" required>
+    </div>
+    <div class="form-group">
+      <label for="klantNaam">Klant Naam</label>
+      <input type="text" class="form-control" id="klantNaam" [(ngModel)]="editingAfspraak.klantNaam" name="klantNaam" required>
+    </div>
+    <div class="form-group">
+      <label for="klantEmail">Klant Email</label>
+      <input type="email" class="form-control" id="klantEmail" [(ngModel)]="editingAfspraak.klantEmail" name="klantEmail" required>
+    </div>
+    <div class="form-group">
+      <label for="klantTelefoonnummer">Klant Telefoonnummer</label>
+      <input type="text" class="form-control" id="klantTelefoonnummer" [(ngModel)]="editingAfspraak.klantTelefoonnummer" name="klantTelefoonnummer" required>
+    </div>
+    <button type="submit" class="btn btn-success">Update</button>
+    <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+  </form>
 </div>
 
-<ng-template #noAfspraken>
-  <div class="container mt-5">
-    <p>Aucun Rendez-vous retrouvé.</p>
-  </div>
-</ng-template>
 
 
   
