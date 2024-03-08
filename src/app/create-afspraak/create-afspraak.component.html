@@ -1,32 +1,32 @@
 <div class="container">
-  <h2>Create Afspraak</h2>
+  <h2>Créer Rendez-vous</h2>
   <form [formGroup]="afspraakForm" (ngSubmit)="onSubmit()">
 
     <!-- Input for existing Klant ID -->
     <div class="form-group">
-      <label for="klantId">Klant ID (for existing klant):</label>
-      <input type="number" class="form-control" id="klantId" formControlName="klantId" placeholder="Enter Klant ID if existing">
+      <label for="klantId">ID Client (pour client existant) :</label>
+      <input type="number" class="form-control" id="klantId" formControlName="klantId" placeholder="Entrez l'ID client si existant">
     </div>
 
     <!-- New Klant Details - Conditional based on klantId being empty -->
     <div *ngIf="!afspraakForm.get('klantId')?.value">
       <div class="form-group">
-        <label for="naam">Naam (for new klant):</label>
-        <input type="text" class="form-control" id="naam" formControlName="klant.Naam" placeholder="Enter Name">
+        <label for="naam">Nom (pour nouveau client) :</label>
+        <input type="text" class="form-control" id="naam" formControlName="klant.Naam" placeholder="Entrez le Nom">
       </div>
       <div class="form-group">
-        <label for="email">Email (for new klant):</label>
-        <input type="email" class="form-control" id="email" formControlName="klant.Email" placeholder="Enter Email">
+        <label for="email">Email (pour nouveau client) :</label>
+        <input type="email" class="form-control" id="email" formControlName="klant.Email" placeholder="Entrez l'Email">
       </div>
       <div class="form-group">
-        <label for="telefoonnummer">Telefoonnummer (for new klant):</label>
-        <input type="text" class="form-control" id="telefoonnummer" formControlName="klant.Telefoonnummer" placeholder="Enter Telefoonnummer">
+        <label for="telefoonnummer">Numéro de Téléphone (pour nouveau client) :</label>
+        <input type="text" class="form-control" id="telefoonnummer" formControlName="klant.Telefoonnummer" placeholder="Entrez le Numéro de Téléphone">
       </div>
     </div>
 
     <!-- Soort Afspraak Dropdown -->
     <div class="form-group">
-      <label for="soort">Soort Afspraak:</label>
+      <label for="soort">Type de Rendez-vous :</label>
       <select class="form-control" id="soort" formControlName="soort">
         <!-- Adjust below to correctly display and choose the value -->
         <option *ngFor="let item of soortAfspraakKeys" [value]="item.key">{{item.value}}</option>
@@ -35,8 +35,8 @@
     
     <!-- DatumTijd Picker -->
     <div class="form-group">
-      <label for="datumTijd">Datum:</label>
-      <input type="date" class="form-control" id="datumTijd" formControlName="datumTijd" placeholder="Selecteer een datum">
+      <label for="datumTijd">Date :</label>
+      <input type="date" class="form-control" id="datumTijd" formControlName="datumTijd" placeholder="Sélectionnez une date">
     </div>
     
 
@@ -46,8 +46,10 @@
     </div>
 
     <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Soumettre</button>
   </form>
+</div>
+
 
 
 
