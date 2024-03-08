@@ -1,12 +1,17 @@
-<div *ngIf="error" class="alert alert-danger" role="alert">
-    {{ error }}
-  </div>
-  <div *ngIf="!error">
-    <h2>Afspraken List</h2>
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let afspraak of afspraken">
-        {{ afspraak.datumTijd | date: 'fullDate' }}: {{ afspraak.soort }}
-      </li>
-    </ul>
-  </div>
+<div *ngIf="afspraken.length; else noAfspraken">
+  <ul>
+    <li *ngFor="let afspraak of afspraken">
+      <p>Afspraak ID: {{afspraak.id}}</p>
+      <p>Type: {{afspraak.soort}}</p>
+      <p>Datum: {{afspraak.datumTijd | date}}</p>
+      <p>Klant Naam: {{afspraak.klant.naam}}</p>
+      <p>Klant Email: {{afspraak.klant.email}}</p>
+      <p>Klant Telefoonnummer: {{afspraak.klant.telefoonnummer}}</p>
+    </li>
+  </ul>
+</div>
+<ng-template #noAfspraken>
+  <p>No appointments found.</p>
+</ng-template>
+
   
