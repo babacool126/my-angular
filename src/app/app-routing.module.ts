@@ -9,7 +9,7 @@ import { ListKlantComponent } from './list-klant/list-klant.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'acceuil', component: HomeComponent },
+  { path: 'accueil', component: HomeComponent },
   { path: 'create-afspraak', component: CreateAfspraakComponent },
   { path: 'list-afspraak', component: ListAfspraakComponent }, // New route for listing afspraken
   { path: 'clients', component: KlantComponent },
