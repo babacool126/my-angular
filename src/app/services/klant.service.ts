@@ -35,4 +35,9 @@ export class KlantService {
   deleteKlant(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
+
+  // Check if an email exists
+  checkEmailExists(email: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/EmailExists?email=${encodeURIComponent(email)}`);
+  }
 }
