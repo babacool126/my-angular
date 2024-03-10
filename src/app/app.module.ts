@@ -5,7 +5,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -45,6 +45,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatFormFieldModule,
     MatInputModule,
     MatNativeDateModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
