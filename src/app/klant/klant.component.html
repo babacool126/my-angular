@@ -1,24 +1,28 @@
-<div class="container mt-3">
-    <h2>{{isEditing ? 'Modifier Client' : 'Ajouter Client'}}</h2>
-    <form (ngSubmit)="onSubmit(klantForm)" #klantForm="ngForm">
-      <div class="mb-3">
-        <label for="naam">Nom</label>
-        <input type="text" id="naam" class="form-control" [(ngModel)]="newKlant.naam" name="Naam" required>
-      </div>
-      <div class="mb-3">
-        <label for="email">Email</label>
-        <input type="email" id="email" class="form-control" [(ngModel)]="newKlant.email" name="Email" required>
-      </div>
-      <div class="mb-3">
-        <label for="telefoonnummer">Numéro de Téléphone</label>
-        <input type="text" id="telefoonnummer" class="form-control" [(ngModel)]="newKlant.telefoonnummer" name="Telefoonnummer" required>
-      </div>
-      <div class="mb-3">
-        <label for="adress">Adresse</label>
-        <input type="text" id="adress" class="form-control" [(ngModel)]="newKlant.adres" name="adress" required>
-      </div>
-      <button type="submit" class="btn btn-primary">{{isEditing ? 'Mettre à jour' : 'Ajouter'}}</button>
-      <button type="button" class="btn btn-secondary" (click)="resetForm(klantForm)" *ngIf="isEditing">Annuler</button>
+<div class="container mt-5">
+    <h2>Ajouter un nouveau client</h2>
+    <!-- Display for error messages -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+    </div>
+
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <div class="mb-3">
+            <label for="naam" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="naam" name="naam" [(ngModel)]="newKlant.naam" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newKlant.email" required>
+        </div>
+        <div class="mb-3">
+            <label for="telefoonnummer" class="form-label">Téléphone</label>
+            <input type="text" class="form-control" id="telefoonnummer" name="telefoonnummer" [(ngModel)]="newKlant.telefoonnummer" required>
+        </div>
+        <div class="mb-3">
+            <label for="adres" class="form-label">Adresse</label>
+            <input type="text" class="form-control" id="adres" name="adres" [(ngModel)]="newKlant.adres" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
-  </div>
-  
+</div>
+

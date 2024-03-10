@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { KlantService } from '../services/klant.service';
-import { Klant } from '../models/klant.model'; // Ensure this model matches your ASP.NET Core model
+import { Klant } from '../models/klant.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-klant',
@@ -17,7 +18,8 @@ export class KlantComponent implements OnInit {
     telefoonnummer: '',
     adres: ''
   };
-  isEditing = false; // Track if we are adding a new klant or editing an existing one
+  isEditing = false;
+  errorMessage: string | null = null; 
 
 
   constructor(private klantService: KlantService) { }
@@ -27,51 +29,37 @@ export class KlantComponent implements OnInit {
   }
 
   loadKlanten(): void {
-    this.klantService.getKlanten().subscribe(klanten => this.klanten = klanten);
+    this.klantService.getKlanten().subscribe({
+      next: klanten => this.klanten = klanten,
+      error: (err: HttpErrorResponse) => this.errorMessage = 'Échec du chargement des clients : ' + err.message
+    });
   }
 
   onSubmit(form: NgForm): void {
-    if (!form.valid) return;
+    if (!form.valid) {
+      this.errorMessage = 'Veuillez vous assurer que tous les champs sont correctement remplis.';
+      return;
+    }
+
+    this.errorMessage = null; // Reset error message
   
-    // Check if we are editing an existing klant or adding a new one
-    if (this.isEditing) {
-      // Update logic remains the same
-      this.klantService.updateKlant(this.newKlant).subscribe(() => {
-        this.loadKlanten();
-        this.resetForm(form);
-      });
+   // Assuming this method now focuses solely on adding new klanten
+   this.klantService.checkEmailExists(this.newKlant.email).subscribe(emailExists => {
+    if (emailExists) {
+      this.errorMessage = 'Cette adresse e-mail est déjà utilisée.';
     } else {
-      // New klant logic with email check
-      this.klantService.checkEmailExists(this.newKlant.email).subscribe(emailExists => {
-        if (emailExists) {
-          alert('This email address is already in use');
-        } else {
-          // Email doesn't exist, proceed with creating the new klant
-          const klantToCreate = { ...this.newKlant };
-          delete klantToCreate.id; // Remove the id field as it's not needed for creation
-          this.klantService.createKlant(klantToCreate).subscribe(() => {
-            this.loadKlanten();
-            this.resetForm(form);
-          });
-        }
+      const klantToCreate = { ...this.newKlant };
+      delete klantToCreate.id; // Remove id for creation
+      this.klantService.createKlant(klantToCreate).subscribe({
+        next: () => {
+          this.loadKlanten();
+          this.resetForm(form);
+        },
+        error: (err: HttpErrorResponse) => this.errorMessage = 'Échec de la création du client : ' + err.message
       });
     }
-  }
-
-  editKlant(klant: Klant): void {
-    this.newKlant = { ...klant };
-    this.isEditing = true;
-  }
-
-  deleteKlant(id: number): void {
-    const confirmation = confirm('Are you sure you want to delete this customer?');
-    if (confirmation) {
-      this.klantService.deleteKlant(id).subscribe(() => {
-        this.loadKlanten(); // Reload the list after deleting
-      });
-    }
-  }
-  
+  });
+}
   resetForm(form: NgForm): void {
     form.reset();
     this.newKlant = { id: 0, naam: '', email: '', telefoonnummer: '', adres: ''};

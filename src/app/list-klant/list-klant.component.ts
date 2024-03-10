@@ -57,12 +57,12 @@ export class ListKlantComponent implements OnInit {
   }
 
   deleteKlant(id: number): void {
-    const confirmation = confirm('Are you sure you want to delete this klant?');
+    const confirmation = confirm('Etes-vous sûr de vouloir supprimen ce client?');
     if (!confirmation) return;
 
     this.klantService.deleteKlant(id).subscribe({
       next: () => this.loadKlanten(),
-      error: err => this.errorMessage = 'Failed to delete klant: ' + err.message
+      error: err => this.errorMessage = 'Erreur lors de la suppression: ' + err.message
     });
   }
 

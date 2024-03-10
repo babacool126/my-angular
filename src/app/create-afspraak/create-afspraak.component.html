@@ -7,28 +7,35 @@
       <input type="email" class="form-control" id="email" name="klantEmail" [(ngModel)]="afspraak.klantEmail" placeholder="Entrez l'email du client" required>
     </div>
     
-    <!-- Optional: Name and Telefoonnummer for existing clients -->
+    <!-- Name for new or existing clients -->
     <div class="form-group">
-      <label for="naam">Nom Client (optionnel):</label>
-      <input type="text" class="form-control" id="naam" [(ngModel)]="afspraak.klantNaam" name="klantNaam">
+      <label for="customerName">Nom Client :</label>
+      <input type="text" class="form-control" id="customerName" name="customerName" [(ngModel)]="afspraak.customerName" required>
+      <div *ngIf="afspraakForm.submitted && afspraakForm.controls['customerName']?.errors?.['required']" class="text-danger">
+        Le nom du client est requis.
+      </div>
     </div>
+    <!-- Phone Number for new or existing clients -->
     <div class="form-group">
-      <label for="telefoonnummer">Numéro de Téléphone Client (optionnel):</label>
-      <input type="text" class="form-control" id="telefoonnummer" [(ngModel)]="afspraak.klantTelefoonnummer" name="klantTelefoonnummer">
+      <label for="customerPhoneNumber">Numéro de Téléphone Client :</label>
+      <input type="text" class="form-control" id="customerPhoneNumber" name="customerPhoneNumber" [(ngModel)]="afspraak.customerPhoneNumber" required>
+      <div *ngIf="afspraakForm.submitted && afspraakForm.controls['customerPhoneNumber']?.errors?.['required']" class="text-danger">
+        Le numéro de téléphone est requis.
+      </div>
     </div>
 
     <!-- Soort Afspraak Dropdown -->
     <div class="form-group">
       <label for="soort">Type de Rendez-vous :</label>
-      <select class="form-control" id="type" [(ngModel)]="afspraak.soort" name="type" required>
-        <option *ngFor="let item of soortAfspraakKeys" [ngValue]="item.key">{{ item.value }}</option>
+      <select class="form-control" id="soort" [(ngModel)]="afspraak.soort" name="soort" required>
+        <option *ngFor="let item of soortAfspraakKeys" [value]="item.key">{{ item.value }}</option>
       </select>
     </div>
     
     <!-- DatumTijd Picker -->
     <div class="form-group">
       <label for="datumTijd">Date et Heure :</label>
-      <input type="datetime-local" class="form-control" id="datumTijd" name="datumTijd" [(ngModel)]="datumTijdInput" name="datumTijd" required>
+      <input type="datetime-local" class="form-control" id="datumTijd" name="datumTijd" [(ngModel)]="afspraak.datumTijd" required>
     </div>
     
     <!-- Error Message Display -->
@@ -40,6 +47,7 @@
     <button type="submit" class="btn btn-primary" [disabled]="!afspraakForm.valid">Soumettre</button>
   </form>
 </div>
+
 
 
 

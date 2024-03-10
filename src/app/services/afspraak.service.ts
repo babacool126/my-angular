@@ -14,7 +14,7 @@ export class AfspraakService {
   constructor(private http: HttpClient) { }
 
   // Create a new appointment
-  createAfspraak(afspraak: Afspraak): Observable<Afspraak> {
+  createAfspraak(afspraak: any): Observable<Afspraak> {
     return this.http.post<Afspraak>(this.apiUrl, afspraak);
   }
 
