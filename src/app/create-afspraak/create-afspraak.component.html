@@ -3,13 +3,13 @@
   <form #afspraakForm="ngForm" (ngSubmit)="onSubmit(afspraakForm)">
     <!-- Input for Klant Email -->
     <div class="form-group">
-      <label for="email">Email Client :</label>
+      <label for="email">Votre Email :</label>
       <input type="email" class="form-control" id="email" name="klantEmail" [(ngModel)]="afspraak.klantEmail" placeholder="Entrez l'email du client" required>
     </div>
     
     <!-- Name for new or existing clients -->
     <div class="form-group">
-      <label for="customerName">Nom Client :</label>
+      <label for="customerName">Nom :</label>
       <input type="text" class="form-control" id="customerName" name="customerName" [(ngModel)]="afspraak.customerName" required>
       <div *ngIf="afspraakForm.submitted && afspraakForm.controls['customerName']?.errors?.['required']" class="text-danger">
         Le nom du client est requis.
@@ -17,7 +17,7 @@
     </div>
     <!-- Phone Number for new or existing clients -->
     <div class="form-group">
-      <label for="customerPhoneNumber">Numéro de Téléphone Client :</label>
+      <label for="customerPhoneNumber">Numéro de Téléphone :</label>
       <input type="text" class="form-control" id="customerPhoneNumber" name="customerPhoneNumber" [(ngModel)]="afspraak.customerPhoneNumber" required>
       <div *ngIf="afspraakForm.submitted && afspraakForm.controls['customerPhoneNumber']?.errors?.['required']" class="text-danger">
         Le numéro de téléphone est requis.
@@ -34,10 +34,11 @@
     
     <!-- DatumTijd Picker -->
     <div class="form-group">
-      <label for="datumTijd">Date et Heure :</label>
+      <label for="datumTijd">Date et Heure:</label>
       <input type="datetime-local" class="form-control" id="datumTijd" name="datumTijd" [(ngModel)]="afspraak.datumTijd" required>
-    </div>
+  </div>
     
+
     <!-- Error Message Display -->
     <div *ngIf="errorMessage" class="alert alert-danger">
       {{ errorMessage }}

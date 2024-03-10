@@ -5,6 +5,7 @@ import { AfspraakService } from '../services/afspraak.service';
 import { KlantService } from '../services/klant.service';
 import { Afspraak } from '../models/afspraak.model';
 import { SoortAfspraak } from '../models/soort.model';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 @Component({
   selector: 'app-create-afspraak',
@@ -14,16 +15,18 @@ import { SoortAfspraak } from '../models/soort.model';
 export class CreateAfspraakComponent implements OnInit {
   afspraak = { // Simplified model for the form's use
     soort: 0,
-    datumTijd: new Date().toISOString().slice(0, 16), // Use for binding with the datetime-local input
+    datumTijd: '',
     klantEmail: '',
-    customerName: '', // Newly added
-    customerPhoneNumber: '', // Newly added
-    customerAddress: '', // Newly added
+    customerName: '', 
+    customerPhoneNumber: '',
+    customerAddress: '',
   };
   soortAfspraakKeys = Object.keys(SoortAfspraak).filter(key => !isNaN(Number(key)))
                          .map(key => ({ key: Number(key), value: SoortAfspraak[key as any] }));
 
   errorMessage: string | null = null;
+  minDate: Date = new Date();
+  maxAppointmentsPerDay: number = 4; 
 
   constructor(
     private afspraakService: AfspraakService,
@@ -38,6 +41,29 @@ export class CreateAfspraakComponent implements OnInit {
       this.errorMessage = "Veuillez remplir tous les champs requis.";
       return;
     }
+
+     // Ensure the date is in the future and on a weekday in the client side as an initial check
+     const selectedDate = new Date(this.afspraak.datumTijd);
+     const currentDateTime = new Date();
+     currentDateTime.setSeconds(0);
+
+     if (selectedDate <= currentDateTime) {
+      this.errorMessage = "La date doit être un jour de semaine et dans le futur.";
+      return;
+    }
+
+    // Check if the appointment is on a weekend (Saturday or Sunday)
+    if (selectedDate.getDay() === 6 || selectedDate.getDay() === 0) {
+      this.errorMessage = "Les rendez-vous ne peuvent être planifiés que du lundi au vendredi.";
+      return;
+  }
+
+     // Check if the appointment is within working hours (8 AM to 6 PM)
+    const appointmentTime = selectedDate.getHours();
+    if (appointmentTime < 8 || appointmentTime >= 18) {
+      this.errorMessage = "Les rendez-vous ne peuvent être planifiés qu'entre 8 h et 18 h.";
+      return;
+  }
 
     this.createAfspraak();
   }

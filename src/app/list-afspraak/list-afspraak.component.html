@@ -4,13 +4,14 @@
     <table class="table table-hover table-dark">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">Afspraak ID</th>
+          <th scope="col">Numéro de client</th>
           <th scope="col">Type</th>
-          <th scope="col">Datum</th>
-          <th scope="col">Klant Naam</th>
-          <th scope="col">Klant Email</th>
-          <th scope="col">Klant Telefoonnummer</th>
-          <th scope="col">Klant Adress</th>
+          <th scope="col">Date</th>
+          <th scope="col">Heure</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Email</th>
+          <th scope="col">Numéro de téléphone</th>
+          <th scope="col">Adresse</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -19,6 +20,7 @@
           <td>{{ afspraak.afspraakId }}</td>
           <td>{{ getSoortString(afspraak.soort) }}</td>
           <td>{{ afspraak.datumTijd | date }}</td>
+          <td>{{ afspraak.datumTijd | date:'HH:mm' }}</td>
           <td>{{ afspraak.klantNaam }}</td>
           <td>{{ afspraak.klantEmail }}</td>
           <td>{{ afspraak.klantTelefoonnummer }}</td>
@@ -47,23 +49,23 @@
       </select>      
     </div>
     <div class="form-group">
-      <label for="datumTijd">Datum</label>
+      <label for="datumTijd">Date</label>
       <input type="date" class="form-control" id="datumTijd" [(ngModel)]="editingAfspraak.datumTijd" name="datumTijd" required>
     </div>
     <div class="form-group">
-      <label for="klantNaam">Klant Naam</label>
+      <label for="klantNaam">Nom du client</label>
       <input type="text" class="form-control" id="klantNaam" [(ngModel)]="editingAfspraak.klantNaam" name="klantNaam" required>
     </div>
     <div class="form-group">
-      <label for="klantEmail">Klant Email</label>
+      <label for="klantEmail">Email</label>
       <input type="email" class="form-control" id="klantEmail" [(ngModel)]="editingAfspraak.klantEmail" name="klantEmail" required>
     </div>
     <div class="form-group">
-      <label for="klantTelefoonnummer">Klant Telefoonnummer</label>
+      <label for="klantTelefoonnummer">Numéro de téléphone</label>
       <input type="text" class="form-control" id="klantTelefoonnummer" [(ngModel)]="editingAfspraak.klantTelefoonnummer" name="klantTelefoonnummer" required>
     </div>
     <div class="form-group">
-      <label for="klantAdress">Klant Adress</label>
+      <label for="klantAdress">Adresse</label>
       <input type="text" class="form-control" id="klantAdress" [(ngModel)]="editingAfspraak.klantAdres" name="klantAdress" required>
     </div>
     <button type="submit" class="btn btn-success">Update</button>
