@@ -5,4 +5,5 @@ export interface Klant {
     naam: string;
     email: string;
     telefoonnummer: string;
+    adres: string;
   }

@@ -14,7 +14,8 @@ export class KlantComponent implements OnInit {
     id: 0,
     naam: '',
     email: '',
-    telefoonnummer: ''
+    telefoonnummer: '',
+    adres: ''
   };
   isEditing = false; // Track if we are adding a new klant or editing an existing one
 
@@ -31,22 +32,28 @@ export class KlantComponent implements OnInit {
 
   onSubmit(form: NgForm): void {
     if (!form.valid) return;
-
+  
+    // Check if we are editing an existing klant or adding a new one
     if (this.isEditing) {
+      // Update logic remains the same
       this.klantService.updateKlant(this.newKlant).subscribe(() => {
         this.loadKlanten();
         this.resetForm(form);
       });
     } else {
-      // Assuming createKlant might need adjustment to match the expected payload,
-      // as it looks like it should not include an 'id' based on its definition in the service:
-      // createKlant(klant: Omit<Klant, 'Id'>): Observable<Klant>
-      // You might need to adjust the object sent to createKlant to exclude the 'id' if it's set to a default value like 0.
-      const klantToCreate = { ...this.newKlant };
-      delete klantToCreate.id; // Assuming 'id' is named 'Id' in the model, adjust as necessary
-      this.klantService.createKlant(klantToCreate as Omit<Klant, 'Id'>).subscribe(() => {
-        this.loadKlanten();
-        this.resetForm(form);
+      // New klant logic with email check
+      this.klantService.checkEmailExists(this.newKlant.email).subscribe(emailExists => {
+        if (emailExists) {
+          alert('This email address is already in use');
+        } else {
+          // Email doesn't exist, proceed with creating the new klant
+          const klantToCreate = { ...this.newKlant };
+          delete klantToCreate.id; // Remove the id field as it's not needed for creation
+          this.klantService.createKlant(klantToCreate).subscribe(() => {
+            this.loadKlanten();
+            this.resetForm(form);
+          });
+        }
       });
     }
   }
@@ -67,7 +74,7 @@ export class KlantComponent implements OnInit {
   
   resetForm(form: NgForm): void {
     form.reset();
-    this.newKlant = { id: 0, naam: '', email: '', telefoonnummer: '' };
+    this.newKlant = { id: 0, naam: '', email: '', telefoonnummer: '', adres: ''};
     this.isEditing = false;
   }
 }

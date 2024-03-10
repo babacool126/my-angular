@@ -10,6 +10,7 @@
           <th scope="col">Klant Naam</th>
           <th scope="col">Klant Email</th>
           <th scope="col">Klant Telefoonnummer</th>
+          <th scope="col">Klant Adress</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -21,6 +22,7 @@
           <td>{{ afspraak.klantNaam }}</td>
           <td>{{ afspraak.klantEmail }}</td>
           <td>{{ afspraak.klantTelefoonnummer }}</td>
+          <td>{{ afspraak.klantAdres }}</td>
           <td>
             <button class="btn btn-primary me-2" (click)="startEdit(afspraak)">
               <i class="bi bi-pencil-square"></i> Modify
@@ -34,11 +36,6 @@
     </table>
   </div>
   
-  
-Apologies for the cutoff. Let's complete the edit form for your appointments (Afspraak). This example assumes a simple inline form structure directly within the ListAfspraakComponent template for editing the selected appointment. The form will be conditionally displayed based on whether an editingAfspraak is set.
-
-html
-Copy code
 <!-- Edit Afspraak Form -->
 <div #editFormElement *ngIf="editingAfspraak" class="mt-5">
   <h3>Edit Appointment</h3>
@@ -46,8 +43,8 @@ Copy code
     <div class="form-group">
       <label for="type">Type</label>
       <select class="form-control" id="type" [(ngModel)]="editingAfspraak.soort" name="type" required>
-        <option *ngFor="let key of SoortAfspraak | keyvalue" [value]="key.key">{{ key.value }}</option>
-      </select>
+        <option *ngFor="let soort of soortAfspraakKeys" [ngValue]="soort.key">{{ soort.value }}</option>
+      </select>      
     </div>
     <div class="form-group">
       <label for="datumTijd">Datum</label>
@@ -64,6 +61,10 @@ Copy code
     <div class="form-group">
       <label for="klantTelefoonnummer">Klant Telefoonnummer</label>
       <input type="text" class="form-control" id="klantTelefoonnummer" [(ngModel)]="editingAfspraak.klantTelefoonnummer" name="klantTelefoonnummer" required>
+    </div>
+    <div class="form-group">
+      <label for="klantAdress">Klant Adress</label>
+      <input type="text" class="form-control" id="klantAdress" [(ngModel)]="editingAfspraak.klantAdres" name="klantAdress" required>
     </div>
     <button type="submit" class="btn btn-success">Update</button>
     <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>

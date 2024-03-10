@@ -6,8 +6,9 @@ export interface Afspraak {
   afspraakId: number;
   klantId?: number;
   klantNaam?: string;
-  klantEmail?: string;
+  klantEmail: string;
   klantTelefoonnummer?: string;
-  soort: string; // Assuming you manage the enumeration as a string on the front end
+  klantAdres?: string;
+  soort: number; // Assuming you manage the enumeration as a string on the front end
   datumTijd: Date;
 }

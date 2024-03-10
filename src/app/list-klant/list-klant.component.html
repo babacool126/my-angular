@@ -1,5 +1,10 @@
 <div class="container mt-5">
     <h2 class="mb-4">Liste des Clients</h2>
+    <!-- Error Message Display -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+    </div>
+    
     <div class="table-responsive">
         <table class="table table-hover table-dark">
             <thead class="table-dark">
@@ -8,6 +13,7 @@
                     <th scope="col">Nom</th>
                     <th scope="col">Email</th>
                     <th scope="col">Téléphone</th>
+                    <th scope="col">Adresse</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -17,6 +23,7 @@
                     <td>{{ klant.naam }}</td>
                     <td>{{ klant.email }}</td>
                     <td>{{ klant.telefoonnummer }}</td>
+                    <td>{{ klant.adres }}</td>
                     <td>
                         <button class="btn btn-primary me-2" (click)="startEdit(klant)">
                             <i class="bi bi-pencil-square"></i> Modifier
@@ -47,6 +54,10 @@
               <label for="telefoonnummer">Téléphone</label>
               <input type="text" class="form-control" id="telefoonnummer" [(ngModel)]="editingKlant.telefoonnummer" name="telefoonnummer" required>
           </div>
+          <div class="form-group">
+            <label for="Adress">Adresse</label>
+            <input type="text" class="form-control" id="Adress" [(ngModel)]="editingKlant.adres" name="adress" required>
+        </div>
           <button type="submit" class="btn btn-success">Mettre à jour</button>
           <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
       </form>

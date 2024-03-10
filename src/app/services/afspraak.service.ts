@@ -9,6 +9,7 @@ import { Afspraak } from '../models/afspraak.model';
 })
 export class AfspraakService {
   private apiUrl = 'https://localhost:7030/api/afspraaks'; // Adjust the port as necessary
+  private klantApiUrl = 'https://localhost:7030/api/klants';
 
   constructor(private http: HttpClient) { }
 
@@ -35,5 +36,9 @@ export class AfspraakService {
   // Delete an appointment by ID
   deleteAfspraak(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+  // Check if an email exists (wrapper around KlantService)
+  checkEmailExists(email: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.klantApiUrl}/EmailExists?email=${encodeURIComponent(email)}`);
   }
 }

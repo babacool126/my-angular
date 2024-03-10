@@ -13,6 +13,10 @@
         <label for="telefoonnummer">Numéro de Téléphone</label>
         <input type="text" id="telefoonnummer" class="form-control" [(ngModel)]="newKlant.telefoonnummer" name="Telefoonnummer" required>
       </div>
+      <div class="mb-3">
+        <label for="adress">Adresse</label>
+        <input type="text" id="adress" class="form-control" [(ngModel)]="newKlant.adres" name="adress" required>
+      </div>
       <button type="submit" class="btn btn-primary">{{isEditing ? 'Mettre à jour' : 'Ajouter'}}</button>
       <button type="button" class="btn btn-secondary" (click)="resetForm(klantForm)" *ngIf="isEditing">Annuler</button>
     </form>

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { KlantService } from '../services/klant.service';
 import { Klant } from '../models/klant.model';
-import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-list-klant',
@@ -10,9 +10,10 @@ import { NgForm } from '@angular/forms';
 })
 export class ListKlantComponent implements OnInit {
   klanten: Klant[] = [];
-  editingKlant: Klant | null = null; // Currently being edited klant
+  editingKlant: Klant | null = null;
+  errorMessage: string | null = null;
 
-  @ViewChild('editFormElement') editFormElement!: ElementRef; // ViewChild for scrolling to form
+  @ViewChild('editFormElement', { static: false }) editFormElement!: ElementRef;
 
   constructor(private klantService: KlantService) { }
 
@@ -21,23 +22,34 @@ export class ListKlantComponent implements OnInit {
   }
 
   loadKlanten(): void {
-    this.klantService.getKlanten().subscribe(klanten => this.klanten = klanten);
+    this.klantService.getKlanten().subscribe({
+      next: klanten => this.klanten = klanten,
+      error: err => this.errorMessage = 'Une erreur est survenue' + err.message
+    });
   }
 
   startEdit(klant: Klant): void {
-    console.log("Editing klant:", klant); // Check if klant is passed correctly
     this.editingKlant = { ...klant };
-    console.log("editingKlant after set:", this.editingKlant); // Verify editingKlant is set
-    this.scrollToEditForm(); // Scroll to edit form
+    setTimeout(() => this.scrollToEditForm(), 100); // Ensuring the form is visible before scrolling
   }
 
   submitEdit(form: NgForm): void {
-    if (this.editingKlant && form.valid) {
-      this.klantService.updateKlant(this.editingKlant).subscribe(() => {
-        this.loadKlanten();
-        this.cancelEdit(); // Reset editing state
-      });
+    if (!this.editingKlant || !form.valid) {
+      this.errorMessage = 'Veuillez remplir correctement tous les champs';
+      return;
     }
+
+    this.klantService.updateKlant(this.editingKlant).subscribe({
+      next: () => {
+        this.loadKlanten();
+        this.cancelEdit();
+        this.errorMessage = null; // Clear any error messages
+      },
+      error: err => {
+        this.errorMessage = 'Adresse email déjà utilisée';
+        console.error('Update klant error:', err);
+      }
+    });
   }
 
   cancelEdit(): void {
@@ -45,15 +57,18 @@ export class ListKlantComponent implements OnInit {
   }
 
   deleteKlant(id: number): void {
-    const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce client?');
-    if (confirmation) {
-      this.klantService.deleteKlant(id).subscribe(() => {
-        this.loadKlanten();
-      });
-    }
+    const confirmation = confirm('Are you sure you want to delete this klant?');
+    if (!confirmation) return;
+
+    this.klantService.deleteKlant(id).subscribe({
+      next: () => this.loadKlanten(),
+      error: err => this.errorMessage = 'Failed to delete klant: ' + err.message
+    });
   }
-  scrollToEditForm() {
+
+  scrollToEditForm(): void {
     this.editFormElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 }
+
 

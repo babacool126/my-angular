@@ -1,54 +1,48 @@
 <div class="container">
   <h2>Créer Rendez-vous</h2>
-  <form [formGroup]="afspraakForm" (ngSubmit)="onSubmit()">
-
-    <!-- Input for existing Klant ID -->
+  <form #afspraakForm="ngForm" (ngSubmit)="onSubmit(afspraakForm)">
+    <!-- Input for Klant Email -->
     <div class="form-group">
-      <label for="klantId">ID Client (pour client existant) :</label>
-      <input type="number" class="form-control" id="klantId" formControlName="klantId" placeholder="Entrez l'ID client si existant">
+      <label for="email">Email Client :</label>
+      <input type="email" class="form-control" id="email" name="klantEmail" [(ngModel)]="afspraak.klantEmail" placeholder="Entrez l'email du client" required>
     </div>
-
-    <!-- New Klant Details - Conditional based on klantId being empty -->
-    <div *ngIf="!afspraakForm.get('klantId')?.value">
-      <div class="form-group">
-        <label for="naam">Nom (pour nouveau client) :</label>
-        <input type="text" class="form-control" id="naam" formControlName="klant.Naam" placeholder="Entrez le Nom">
-      </div>
-      <div class="form-group">
-        <label for="email">Email (pour nouveau client) :</label>
-        <input type="email" class="form-control" id="email" formControlName="klant.Email" placeholder="Entrez l'Email">
-      </div>
-      <div class="form-group">
-        <label for="telefoonnummer">Numéro de Téléphone (pour nouveau client) :</label>
-        <input type="text" class="form-control" id="telefoonnummer" formControlName="klant.Telefoonnummer" placeholder="Entrez le Numéro de Téléphone">
-      </div>
+    
+    <!-- Optional: Name and Telefoonnummer for existing clients -->
+    <div class="form-group">
+      <label for="naam">Nom Client (optionnel):</label>
+      <input type="text" class="form-control" id="naam" [(ngModel)]="afspraak.klantNaam" name="klantNaam">
+    </div>
+    <div class="form-group">
+      <label for="telefoonnummer">Numéro de Téléphone Client (optionnel):</label>
+      <input type="text" class="form-control" id="telefoonnummer" [(ngModel)]="afspraak.klantTelefoonnummer" name="klantTelefoonnummer">
     </div>
 
     <!-- Soort Afspraak Dropdown -->
     <div class="form-group">
       <label for="soort">Type de Rendez-vous :</label>
-      <select class="form-control" id="soort" formControlName="soort">
-        <!-- Adjust below to correctly display and choose the value -->
-        <option *ngFor="let item of soortAfspraakKeys" [value]="item.key">{{item.value}}</option>
+      <select class="form-control" id="type" [(ngModel)]="afspraak.soort" name="type" required>
+        <option *ngFor="let item of soortAfspraakKeys" [ngValue]="item.key">{{ item.value }}</option>
       </select>
     </div>
     
     <!-- DatumTijd Picker -->
     <div class="form-group">
-      <label for="datumTijd">Date :</label>
-      <input type="date" class="form-control" id="datumTijd" formControlName="datumTijd" placeholder="Sélectionnez une date">
+      <label for="datumTijd">Date et Heure :</label>
+      <input type="datetime-local" class="form-control" id="datumTijd" name="datumTijd" [(ngModel)]="datumTijdInput" name="datumTijd" required>
     </div>
     
-
     <!-- Error Message Display -->
-    <div *ngIf="error" class="alert alert-danger">
-      {{ error }}
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
     </div>
-
+  
     <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary">Soumettre</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!afspraakForm.valid">Soumettre</button>
   </form>
 </div>
+
+
+
 
 
 

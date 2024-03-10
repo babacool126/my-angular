@@ -40,4 +40,5 @@ export class KlantService {
   checkEmailExists(email: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/EmailExists?email=${encodeURIComponent(email)}`);
   }
+  
 }
