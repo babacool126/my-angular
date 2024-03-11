@@ -55,7 +55,19 @@ export class KlantComponent implements OnInit {
           this.loadKlanten();
           this.resetForm(form);
         },
-        error: (err: HttpErrorResponse) => this.errorMessage = 'Échec de la création du client : ' + err.message
+        error: (err: HttpErrorResponse) => {
+          // New error handling logic
+          if (err.status === 400 && err.error && err.error.errors) {
+            // Parsing the detailed error message from backend
+            const backendErrors = err.error.errors;
+            const formattedErrors = Object.keys(backendErrors).map(key => 
+              `${key}: ${backendErrors[key].join(', ')}`).join('; ');
+            this.errorMessage = `Échec de la création du client : ${formattedErrors}`;
+          } else {
+            // Fallback for other types of errors
+            this.errorMessage = `Échec de la création du client : ${err.message}`;
+          }
+        }
       });
     }
   });

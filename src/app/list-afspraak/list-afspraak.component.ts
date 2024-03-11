@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AfspraakService } from '../services/afspraak.service';
 import { KlantService } from '../services/klant.service';
 import { Afspraak } from '../models/afspraak.model';
 import { SoortAfspraak } from '../models/soort.model';
 import { NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-list-afspraak',
@@ -20,13 +22,15 @@ export class ListAfspraakComponent implements OnInit {
 
   editingAfspraak: Afspraak | null = null; // Currently being edited afspraak
   originalAfspraak: Afspraak | null = null; 
+  errorMessage: string | null = null;
+  
 
   @ViewChild('editFormElement') editFormElement!: ElementRef; // ViewChild for scrolling to form
 
   constructor(
     private afspraakService: AfspraakService,
     private klantService: KlantService,
-    private router: Router // Add Router here
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -52,7 +56,7 @@ export class ListAfspraakComponent implements OnInit {
 
   submitEdit(form: NgForm): void {
     if (!this.editingAfspraak || !form.valid) {
-      console.log('Form is invalid or editingAfspraak is null');
+      this.errorMessage = 'Form is invalid or editingAfspraak is null';
       return;
     }
   
@@ -61,21 +65,30 @@ export class ListAfspraakComponent implements OnInit {
     if (klantEmail) {
       this.klantService.checkEmailExists(klantEmail).subscribe(emailExists => {
         if (emailExists && this.originalAfspraak && this.originalAfspraak.klantEmail !== klantEmail) {
-          alert('This email address is already in use. Please choose another one.');
+          this.errorMessage = 'Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.';
         } else {
           this.afspraakService.updateAfspraak(this.editingAfspraak!).subscribe(() => {
             console.log('Afspraak updated successfully');
             this.loadAfspraken();
             this.cancelEdit();
-          }, error => {
-            console.error('Error updating afspraak:', error);
+          }, (error: HttpErrorResponse) => {
+            // Improved error handling
+            if (error.status === 400 && error.error && error.error.errors) {
+              const backendErrors = error.error.errors;
+              const formattedErrors = Object.keys(backendErrors)
+                .map(key => `${key}: ${backendErrors[key].join(', ')}`)
+                .join('; ');
+              this.errorMessage = `Échec de la mise à jour de l'afspraak : ${formattedErrors}`;
+            } else {
+              this.errorMessage = `Échec de la mise à jour de l'afspraak : Une erreur inattendue est survenue.`;
+            }
           });
         }
       }, error => {
-        console.error('Error checking email exists:', error);
+        this.errorMessage = `Erreur lors de la vérification de l'existence de l'e-mail : ${error.message}`;
       });
     } else {
-      console.log('Editing afspraak has no email');
+      this.errorMessage = 'L’afspraak en cours de modification n’a pas d’email.';
     }
   }
 

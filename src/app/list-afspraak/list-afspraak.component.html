@@ -49,16 +49,30 @@
       </select>      
     </div>
     <div class="form-group">
-      <label for="datumTijd">Date</label>
-      <input type="date" class="form-control" id="datumTijd" [(ngModel)]="editingAfspraak.datumTijd" name="datumTijd" required>
-    </div>
-    <div class="form-group">
       <label for="klantNaam">Nom du client</label>
       <input type="text" class="form-control" id="klantNaam" [(ngModel)]="editingAfspraak.klantNaam" name="klantNaam" required>
     </div>
     <div class="form-group">
+      <label for="datumTijd">Date</label>
+      <input type="date" class="form-control" id="datumTijd" [(ngModel)]="editingAfspraak.datumTijd" name="datumTijd" required>
+    </div>
+    <div class="form-group">
       <label for="klantEmail">Email</label>
-      <input type="email" class="form-control" id="klantEmail" [(ngModel)]="editingAfspraak.klantEmail" name="klantEmail" required>
+      <input 
+        type="email" 
+        class="form-control" 
+        id="klantEmail" 
+        [(ngModel)]="editingAfspraak.klantEmail" 
+        name="klantEmail" 
+        #klantEmailField="ngModel" 
+        required 
+        email>
+        <div *ngIf="klantEmailField.errors?.['required'] && klantEmailField.touched" class="text-danger">
+          L'adresse email est requise.
+        </div>
+        <div *ngIf="klantEmailField.errors?.['email'] && klantEmailField.touched" class="text-danger">
+          Veuillez entrer une adresse email valide.
+        </div>
     </div>
     <div class="form-group">
       <label for="klantTelefoonnummer">Numéro de téléphone</label>
