@@ -13,7 +13,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateMod
   styleUrls: ['./create-afspraak.component.css']
 })
 export class CreateAfspraakComponent implements OnInit {
-  afspraak = { // Simplified model for the form's use
+  afspraak = {
     soort: 0,
     datumTijd: '',
     klantEmail: '',
@@ -48,7 +48,7 @@ export class CreateAfspraakComponent implements OnInit {
      currentDateTime.setSeconds(0);
 
      if (selectedDate <= currentDateTime) {
-      this.errorMessage = "La date doit être un jour de semaine et dans le futur.";
+      this.errorMessage = "La date doit être un jour de semaine.";
       return;
     }
 
@@ -80,7 +80,7 @@ export class CreateAfspraakComponent implements OnInit {
 
     this.afspraakService.createAfspraak(afspraakCreationPayload).subscribe({
       next: () => this.router.navigate(['/accueil']),
-      error: (error) => this.errorMessage = "Erreur lors de la création du rendez-vous:  " + (error.error?.title || "l'adresse email existe déjà"),
+      error: (error) => this.errorMessage = "Erreur lors de la création du rendez-vous:  " + (error.error?.title || "Un rendez-vous a déjà été pris"),
     });
   }
 }
