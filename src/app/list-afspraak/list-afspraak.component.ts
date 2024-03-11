@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { AfspraakService } from '../services/afspraak.service';
 import { KlantService } from '../services/klant.service';
 import { Afspraak } from '../models/afspraak.model';
@@ -18,10 +19,15 @@ export class ListAfspraakComponent implements OnInit {
     .map(key => ({ key: Number(key), value: SoortAfspraak[key as any] }));
 
   editingAfspraak: Afspraak | null = null; // Currently being edited afspraak
+  originalAfspraak: Afspraak | null = null; 
 
   @ViewChild('editFormElement') editFormElement!: ElementRef; // ViewChild for scrolling to form
 
-  constructor(private afspraakService: AfspraakService, private klantService: KlantService) { }
+  constructor(
+    private afspraakService: AfspraakService,
+    private klantService: KlantService,
+    private router: Router // Add Router here
+  ) { }
 
   ngOnInit(): void {
     this.loadAfspraken();
@@ -37,6 +43,7 @@ export class ListAfspraakComponent implements OnInit {
   startEdit(afspraak: Afspraak): void {
     if(afspraak) {
     this.editingAfspraak = { ...afspraak };
+    this.originalAfspraak = { ...afspraak };
     this.scrollToEditForm();
     }else {
       console.error('Afspraak is null.');
@@ -44,34 +51,31 @@ export class ListAfspraakComponent implements OnInit {
   }
 
   submitEdit(form: NgForm): void {
-    console.log('submitEdit called with form validity:', form.valid);
-
-    if (this.editingAfspraak && form.valid) {
-      // Update logic
-      // Check if the email is being edited to already existing one
-      this.klantService.checkEmailExists(this.editingAfspraak.klantEmail).subscribe(emailExists => {
-        console.log('Email exists check result:', emailExists);
-
-        if (emailExists) {
-          console.log('Alert: This email address is already in use');
-          alert('This email address is already in use');
+    if (!this.editingAfspraak || !form.valid) {
+      console.log('Form is invalid or editingAfspraak is null');
+      return;
+    }
+  
+    const klantEmail = this.editingAfspraak.klantEmail;
+  
+    if (klantEmail) {
+      this.klantService.checkEmailExists(klantEmail).subscribe(emailExists => {
+        if (emailExists && this.originalAfspraak && this.originalAfspraak.klantEmail !== klantEmail) {
+          alert('This email address is already in use. Please choose another one.');
         } else {
-          // Email doesn't exist, proceed with updating the afspraak
           this.afspraakService.updateAfspraak(this.editingAfspraak!).subscribe(() => {
             console.log('Afspraak updated successfully');
             this.loadAfspraken();
-            this.cancelEdit(); // Reset editing state
-          },
-          error => {
-            console.error('Error updating afspraak:', error); // Log any errors during update
+            this.cancelEdit();
+          }, error => {
+            console.error('Error updating afspraak:', error);
           });
         }
-      },
-      error => {
-        console.error('Error checking email exists:', error); // Log any errors during email check
+      }, error => {
+        console.error('Error checking email exists:', error);
       });
     } else {
-      console.log('Form is invalid or editingAfspraak is null');
+      console.log('Editing afspraak has no email');
     }
   }
 

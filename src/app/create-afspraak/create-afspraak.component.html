@@ -23,7 +23,14 @@
         Le numéro de téléphone est requis.
       </div>
     </div>
-
+    <!-- Adress for new or existing clients -->
+    <div class="form-group">
+      <label for="customerAddress">Adresse :</label>
+      <input type="text" class="form-control" id="customerAddress" name="customerAddress" [(ngModel)]="afspraak.customerAddress" required>
+      <div *ngIf="afspraakForm.submitted && afspraakForm.controls['customerAddress']?.errors?.['required']" class="text-danger">
+        L'adresse du client est requise.
+      </div>
+    </div>
     <!-- Soort Afspraak Dropdown -->
     <div class="form-group">
       <label for="soort">Type de Rendez-vous :</label>
