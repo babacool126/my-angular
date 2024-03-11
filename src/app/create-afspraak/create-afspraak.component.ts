@@ -79,8 +79,15 @@ export class CreateAfspraakComponent implements OnInit {
     };
 
     this.afspraakService.createAfspraak(afspraakCreationPayload).subscribe({
-      next: () => this.router.navigate(['/accueil']),
-      error: (error) => this.errorMessage = "Erreur lors de la création du rendez-vous:  " + (error.error?.title || "Un rendez-vous a déjà été pris"),
+      next: () => {
+        this.router.navigate(['/accueil']); // Navigate on success
+      },
+      error: (error) => {
+        // More explicit error handling
+        // Assuming error response is well-structured and contains a message
+        const errorMessage = error.error?.message || "Une erreur est survenue. Veuillez réessayer.";
+        this.errorMessage = `Erreur lors de la création du rendez-vous: ${errorMessage}`;
+      }
     });
   }
 }
