@@ -84,7 +84,6 @@ export class CreateAfspraakComponent implements OnInit {
       },
       error: (error) => {
         // More explicit error handling
-        // Assuming error response is well-structured and contains a message
         const errorMessage = error.error?.message || "Une erreur est survenue. Veuillez réessayer.";
         this.errorMessage = `Erreur lors de la création du rendez-vous: ${errorMessage}`;
       }

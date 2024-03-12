@@ -9,6 +9,6 @@ export interface Afspraak {
   klantEmail: string;
   klantTelefoonnummer?: string;
   klantAdres?: string;
-  soort: number; // Assuming you manage the enumeration as a string on the front end
+  soort: number;
   datumTijd: Date;
 }
