@@ -56,40 +56,33 @@ export class ListAfspraakComponent implements OnInit {
 
   submitEdit(form: NgForm): void {
     if (!this.editingAfspraak || !form.valid) {
-      this.errorMessage = 'Form is invalid or editingAfspraak is null';
+      this.errorMessage = 'Le formulaire est invalide ou la modification du rendez-vous est impossible.';
       return;
     }
+    
+    const updatePayload = {
+      soort: this.editingAfspraak.soort,
+      datumTijd: this.editingAfspraak.datumTijd
+    };
   
-    const klantEmail = this.editingAfspraak.klantEmail;
-  
-    if (klantEmail) {
-      this.klantService.checkEmailExists(klantEmail).subscribe(emailExists => {
-        if (emailExists && this.originalAfspraak && this.originalAfspraak.klantEmail !== klantEmail) {
-          this.errorMessage = 'Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.';
+    this.afspraakService.updateAfspraak(this.editingAfspraak.afspraakId, updatePayload).subscribe({
+      next: () => {
+        console.log('Rendez-vous mis à jour avec succès');
+        this.loadAfspraken(); // Refresh the appointments list
+        this.cancelEdit(); // Reset editing state
+      },
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 400 && error.error && error.error.errors) {
+          const backendErrors = error.error.errors;
+          const formattedErrors = Object.keys(backendErrors)
+            .map(key => `${key}: ${backendErrors[key].join(', ')}`)
+            .join('; ');
+          this.errorMessage = `Échec de la mise à jour du rendez-vous : ${formattedErrors}`;
         } else {
-          this.afspraakService.updateAfspraak(this.editingAfspraak!).subscribe(() => {
-            console.log('Afspraak updated successfully');
-            this.loadAfspraken();
-            this.cancelEdit();
-          }, (error: HttpErrorResponse) => {
-            // Improved error handling
-            if (error.status === 400 && error.error && error.error.errors) {
-              const backendErrors = error.error.errors;
-              const formattedErrors = Object.keys(backendErrors)
-                .map(key => `${key}: ${backendErrors[key].join(', ')}`)
-                .join('; ');
-              this.errorMessage = `Échec de la mise à jour de l'afspraak : ${formattedErrors}`;
-            } else {
-              this.errorMessage = `Échec de la mise à jour de l'afspraak : Une erreur inattendue est survenue.`;
-            }
-          });
+          this.errorMessage = `Échec de la mise à jour du rendez-vous : Une erreur inattendue est survenue.`;
         }
-      }, error => {
-        this.errorMessage = `Erreur lors de la vérification de l'existence de l'e-mail : ${error.message}`;
-      });
-    } else {
-      this.errorMessage = 'L’afspraak en cours de modification n’a pas d’email.';
-    }
+      }
+    });
   }
 
   cancelEdit(): void {

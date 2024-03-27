@@ -43,7 +43,6 @@ export class KlantComponent implements OnInit {
 
     this.errorMessage = null; // Reset error message
   
-   // Assuming this method now focuses solely on adding new klanten
    this.klantService.checkEmailExists(this.newKlant.email).subscribe(emailExists => {
     if (emailExists) {
       this.errorMessage = 'Cette adresse e-mail est déjà utilisée.';
@@ -56,7 +55,6 @@ export class KlantComponent implements OnInit {
           this.resetForm(form);
         },
         error: (err: HttpErrorResponse) => {
-          // New error handling logic
           if (err.status === 400 && err.error && err.error.errors) {
             // Parsing the detailed error message from backend
             const backendErrors = err.error.errors;

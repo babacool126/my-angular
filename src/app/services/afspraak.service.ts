@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Afspraak } from '../models/afspraak.model';
+import { AfspraakUpdate } from '../models/afspraak-update.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +30,9 @@ export class AfspraakService {
   }
 
   // Update an existing appointment
-  updateAfspraak(afspraak: Afspraak): Observable<Afspraak> {
-    return this.http.put<Afspraak>(`${this.apiUrl}/${afspraak.afspraakId}`, afspraak);
+  updateAfspraak(afspraakId: number, updatePayload: any): Observable<any> { // Consider typing updatePayload more specifically if possible
+    return this.http.put<any>(`${this.apiUrl}/${afspraakId}`, updatePayload);
   }
-
   // Delete an appointment by ID
   deleteAfspraak(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
