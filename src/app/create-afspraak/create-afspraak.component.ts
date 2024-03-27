@@ -48,7 +48,7 @@ export class CreateAfspraakComponent implements OnInit {
      currentDateTime.setSeconds(0);
 
      if (selectedDate <= currentDateTime) {
-      this.errorMessage = "La date doit être un jour de semaine.";
+      this.errorMessage = "La date doit être un jour de semaine et dans le futur.";
       return;
     }
 
